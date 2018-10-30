@@ -50,7 +50,6 @@ function withLayout(BaseComponent) {
     }
 
     return {};
-    2;
   };
 
   return App;

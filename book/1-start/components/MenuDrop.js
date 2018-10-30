@@ -45,7 +45,7 @@ class MenuDrop extends React.Component {
           id="simple-menu"
           anchorEl={this.state.anchorEl}
           open={this.state.open}
-          onClose="{this.handleClose}"
+          onClose={this.handleClose}
         >
           {options.map(option => (
             <div id="wrappingLink" key={option.text}>

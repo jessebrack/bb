@@ -1,5 +1,6 @@
-import _ from 'lodash';
 import mongoose from 'mongoose';
+import _ from 'lodash';
+
 import generateSlug from '../utils/slugify';
 
 const { Schema } = mongoose;
@@ -11,7 +12,7 @@ const mongoSchema = new Schema({
     unique: true,
   },
   googleToken: {
-    access_tokens: String,
+    access_token: String,
     refresh_token: String,
     token_type: String,
     expiry_date: Number,
@@ -47,6 +48,7 @@ const mongoSchema = new Schema({
 });
 
 class UserClass {
+  // User's public fields
   static publicFields() {
     return ['id', 'displayName', 'email', 'avatarUrl', 'slug', 'isAdmin', 'isGithubConnected'];
   }
@@ -63,8 +65,8 @@ class UserClass {
         modifier.access_token = googleToken.accessToken;
       }
 
-      if (googleToken.refresh_token) {
-        modifier.refresh_token = googleToken.refresh_token;
+      if (googleToken.refreshToken) {
+        modifier.refresh_token = googleToken.refreshToken;
       }
 
       if (_.isEmpty(modifier)) {
@@ -77,7 +79,7 @@ class UserClass {
     }
 
     const slug = await generateSlug(this, displayName);
-    const userCount = await this.find().countDocuments();
+    const userCount = await this.find().count();
 
     const newUser = await this.create({
       createdAt: new Date(),

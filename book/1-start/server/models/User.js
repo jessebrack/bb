@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import mongoose from 'mongoose';
+import generateSlug from '../utils/slugify';
 
 const { Schema } = mongoose;
 
@@ -44,7 +46,55 @@ const mongoSchema = new Schema({
   },
 });
 
+class UserClass {
+  static publicFields() {
+    return ['id', 'displayName', 'email', 'avatarUrl', 'slug', 'isAdmin', 'isGithubConnected'];
+  }
 
+  static async signInOrSignUp({
+    googleId, email, googleToken, displayName, avatarUrl,
+  }) {
+    const user = await this.findOne({ googleId }).select(UserClass.publicFields().join(' '));
+
+    if (user) {
+      const modifier = {};
+
+      if (googleToken.accessToken) {
+        modifier.access_token = googleToken.accessToken;
+      }
+
+      if (googleToken.refresh_token) {
+        modifier.refresh_token = googleToken.refresh_token;
+      }
+
+      if (_.isEmpty(modifier)) {
+        return user;
+      }
+
+      await this.updateOne({ googleId }, { $set: modifier });
+
+      return user;
+    }
+
+    const slug = await generateSlug(this, displayName);
+    const userCount = await this.find().countDocuments();
+
+    const newUser = await this.create({
+      createdAt: new Date(),
+      googleId,
+      email,
+      googleToken,
+      displayName,
+      avatarUrl,
+      slug,
+      isAdmin: userCount === 0,
+    });
+
+    return _.pick(newUser, UserClass.publicFields());
+  }
+}
+
+mongoSchema.loadClass(UserClass);
 
 const User = mongoose.model('User', mongoSchema);
 

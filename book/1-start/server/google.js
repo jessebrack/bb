@@ -3,7 +3,7 @@ import { OAuth2Strategy as Strategy } from 'passport-google-oauth';
 
 import User from './models/User';
 
-function auth({ ROOT_URL, server }) {
+function auth({ server, ROOT_URL }) {
   /**
    * Callback for Google Strategy
    * @param {*} accessToken
@@ -52,10 +52,12 @@ function auth({ ROOT_URL, server }) {
     ),
   );
 
+  /**
+   * Create and read user sessions
+   */
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
-
   passport.deserializeUser((id, done) => {
     User.findById(id, User.publicFields(), (err, user) => {
       done(err, user);

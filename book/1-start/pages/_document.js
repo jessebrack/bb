@@ -35,7 +35,11 @@ class MyDocument extends Document {
           />
           {/* Markdown Highlighting */}
           <link rel="stylesheet" href="https://storage.googleapis.com/builderbook/vs.min.css" />
-
+          {/* NProgress Styling */}
+          <link
+            rel="stylesheet"
+            href="https://storage.googleapis.com/builderbook/nprogress.min.css"
+          />
           {/* JSX Styling */}
           <style>
             {`

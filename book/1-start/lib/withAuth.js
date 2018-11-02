@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 
 let globalUser = null;
 
-function withAuth(BaseComponent) {
+function withAuth(BaseComponent, { loginRequired = true, logoutRequired = false } = {}) {
   class App extends React.Component {
     static propTypes = {
       user: PropTypes.shape({
@@ -22,6 +23,16 @@ function withAuth(BaseComponent) {
 
       if (isFromServer) {
         globalUser = user;
+      }
+
+      // If login is required and not logged in, redirect to "/login" page
+      if (loginRequired && !logoutRequired && !user) {
+        Router.push('/login');
+      }
+
+      // If logout is required and user logged in, redirect to "/" page
+      if (logoutRequired && user) {
+        Router.push('/');
       }
     }
 
@@ -43,6 +54,14 @@ function withAuth(BaseComponent) {
     }
 
     render() {
+      const { user } = this.props;
+
+      if (loginRequired && !logoutRequired && !user) {
+        return null;
+      }
+      if (logoutRequired && user) {
+        return null;
+      }
       return <BaseComponent {...this.props} />;
     }
   }

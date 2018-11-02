@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import mongoSessionStore from 'connect-mongo';
 import dotenv from 'dotenv';
 import auth from './google';
+import logger from './logs';
 
 dotenv.config();
 
@@ -52,6 +53,6 @@ app.prepare().then(() => {
 
   server.listen(port, (err) => {
     if (err) throw err;
-    console.log(`> Ready on ${ROOT_URL}`); // eslint-disable-line no-console
+    logger.info(`> Ready on ${ROOT_URL}`);
   });
 });

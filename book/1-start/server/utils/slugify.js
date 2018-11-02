@@ -13,14 +13,26 @@ async function createUniqueSlug(Model, slug, count) {
 }
 
 async function generateSlug(Model, name, filter = {}) {
+  /**
+   * Turn name into a slug format via slugify
+   */
   const origSlug = slugify(name);
 
+  /**
+   * Check if the user slug already exist
+   */
   const user = await Model.findOne(Object.assign({ slug: origSlug }, filter), 'id');
 
+  /**
+   * If the slug doesn't exist, return the new slug
+   */
   if (!user) {
     return origSlug;
   }
 
+  /**
+   * If the same slug does exist, add a number on the end of the slug and return new slug
+   */
   return createUniqueSlug(Model, origSlug, 1);
 }
 

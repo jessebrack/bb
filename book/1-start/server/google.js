@@ -4,7 +4,15 @@ import { OAuth2Strategy as Strategy } from 'passport-google-oauth';
 import User from './models/User';
 
 function auth({ ROOT_URL, server }) {
+  /**
+   * Callback for Google Strategy
+   * @param {*} accessToken
+   * @param {*} refreshToken
+   * @param {*} profile
+   * @param {*} verified
+   */
   const verify = async (accessToken, refreshToken, profile, verified) => {
+    console.log(accessToken, refreshToken);
     let email;
     let avatarUrl;
 
@@ -30,6 +38,9 @@ function auth({ ROOT_URL, server }) {
       console.log(err); // eslint-disable-line
     }
   };
+  /**
+   * Main Google authentication strategy
+   */
   passport.use(
     new Strategy(
       {

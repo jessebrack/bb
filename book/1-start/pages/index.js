@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import withLayout from '../lib/withLayout';
 import withAuth from '../lib/withAuth';
+import notify from '../lib/notifier';
 
 class Index extends React.Component {
   static propTypes = {
@@ -28,7 +29,9 @@ class Index extends React.Component {
           Email:
           {user.email}
         </p>
-        <Button variant="raised">MUI Button</Button>
+        <Button variant="contained" onClick={() => notify('success message')}>
+          Click me to test notify()
+        </Button>
       </div>
     );
   }

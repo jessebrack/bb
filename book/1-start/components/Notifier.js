@@ -25,18 +25,19 @@ class Notifier extends React.Component {
   };
 
   render() {
-    const message = (
-      <span id="snackbar-message-id" dangerouslySetInnerHTML={{ __html: this.state.message }} />
+    const { open, message } = this.state;
+    const messageRender = (
+      <span id="snackbar-message-id" dangerouslySetInnerHTML={{ __html: message }} />
     );
 
     return (
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        message={message}
-        autoHideDuration={5000}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        message={messageRender}
+        autoHideDuration={5000000}
         onClose={this.handleSnackbarRequestClose}
-        open={this.state.open}
-        snackbarcontentprops={{
+        open={open}
+        ContentProps={{
           'aria-describedby': 'snackbar-message-id',
         }}
       />

@@ -6,6 +6,7 @@ import mongoSessionStore from 'connect-mongo';
 import dotenv from 'dotenv';
 import auth from './google';
 import logger from './logs';
+import Chapter from './models/Chapter';
 
 dotenv.config();
 

@@ -28,7 +28,23 @@ const mongoSchema = new Schema({
 });
 
 class BookClass {
-  // methods
+  
+  static async list({ offset = 0, limit = 10} = {}) {
+    // some code
+  }
+
+  static async getBySlug({ slug }) {
+    // some code
+  }
+
+  static async add({ name, price githubRepo}) {
+    // some code
+  }
+
+  static async edit({ id, name, price, githubRepo }) {
+    // some code
+  }
+
 }
 
 mongoSchema.loadClass(BookClass);

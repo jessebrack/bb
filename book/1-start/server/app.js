@@ -50,7 +50,18 @@ app.prepare().then(() => {
 
   auth({ server, ROOT_URL });
 
-  server.get('*', (req, res) => handle(req, res));
+  const URL_MAP = {
+    '/login': '/public/login',
+  };
+
+  server.get('*', (req, res) => {
+    const url = URL_MAP[req.path];
+    if (url) {
+      app.render(req, res, url);
+    } else {
+      handle(req, res);
+    }
+  });
 
   server.listen(port, (err) => {
     if (err) throw err;

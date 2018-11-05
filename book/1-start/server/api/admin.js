@@ -4,6 +4,9 @@ import Book from '../models/Book';
 
 const router = express.Router();
 
+/**
+ * Verify the user is an admin
+ */
 router.use((req, res, next) => {
   if (!req.user || !req.user.isAdmin) {
     res.status(401).json({ error: 'Unauthorized' });

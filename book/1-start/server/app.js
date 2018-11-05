@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import auth from './google';
 import logger from './logs';
 import Chapter from './models/Chapter';
+import api from './api';
 
 dotenv.config();
 
@@ -53,6 +54,8 @@ app.prepare().then(() => {
   const URL_MAP = {
     '/login': '/public/login',
   };
+
+  api(server);
 
   server.get('*', (req, res) => {
     const url = URL_MAP[req.path];

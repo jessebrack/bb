@@ -15,20 +15,20 @@ const mongoSchema = new Schema({
     required: true,
     unique: true,
   },
-  createdAt: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
   githubRepo: {
     type: String,
     required: true,
   },
   githubLastCommitSha: String,
+
+  createdAt: {
+    type: Date,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
 });
 
 class BookClass {
@@ -51,22 +51,20 @@ class BookClass {
     book.chapters = (await Chapter.find({ bookId: book._id }, 'title slug').sort({ order: 1 })).map(
       chapter => chapter.toObject(),
     );
-
     return book;
   }
 
   static async add({ name, price, githubRepo }) {
     const slug = await generateSlug(this, name);
-
     if (!slug) {
       throw new Error('Error with slug generation');
     }
-
     return this.create({
       name,
       slug,
       price,
       githubRepo,
+      createdAt: new Date(),
     });
   }
 
@@ -86,11 +84,7 @@ class BookClass {
       modifier.slug = await generateSlug(this, name);
     }
 
-    await this.updateOne({ _id: id }, { $set: modifier });
-
-    const editedBook = await this.findById(id, 'slug');
-
-    return editedBook;
+    return this.updateOne({ _id: id }, { $set: modifier });
   }
 }
 
